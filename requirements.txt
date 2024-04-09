@@ -1,0 +1,7 @@
+asgiref==3.8.1
+Django==5.0.4
+peewee==3.17.1
+pycodestyle==2.11.1
+pymodbus==3.6.4
+sqlparse==0.4.4
+tzdata==2024.1
