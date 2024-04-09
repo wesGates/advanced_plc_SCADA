@@ -318,7 +318,7 @@
                             </h6>
                              <ul class="nav flex-column mb-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stepper-motor-control-mode' %}">
                                         <i class="bi-briefcase"></i>
                                         Control Mode
                                     </a>
@@ -326,7 +326,7 @@
                             </ul>
                             <ul class="nav flex-column mb-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stepper-motor-data-table' %}">
                                         <i class="bi-briefcase"></i>
                                         Data Table
                                     </a>
@@ -338,7 +338,7 @@
                             </h6>
                              <ul class="nav flex-column mb-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" href="{% url 'schneider-plc-control-mode' %}">
                                         <i class="bi-briefcase"></i>
                                         Control Mode
                                     </a>
@@ -346,7 +346,7 @@
                             </ul>
                             <ul class="nav flex-column mb-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    <a class="nav-link d-flex align-items-center gap-2" href="{% url 'schneider-plc-data-table' %}">
                                         <i class="bi-briefcase"></i>
                                         Data Table
                                     </a>
@@ -360,7 +360,7 @@
 
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Dashboard - {% block page_name %}{% endblock %}</h1>
+                        <h1 class="h2">SCADA - {% block page_name %}{% endblock %}</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group me-2">
                                 {% block page_buttons %}{% endblock %}

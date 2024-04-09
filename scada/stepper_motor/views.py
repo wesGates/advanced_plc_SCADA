@@ -1,3 +1,27 @@
-from django.shortcuts import render
+import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
+from django.conf import settings
+from stepper_motor import utils, models
 
-# Create your views here.
+
+def control_mode(request):
+        
+    return render(
+                    request,
+                    "stepper_motor/control_mode.html",
+                    {
+                    }
+    )
+
+
+def data_table(request):
+        
+    return render(
+                    request,
+                    "stepper_motor/data_table.html",
+                    {
+                    }
+    )

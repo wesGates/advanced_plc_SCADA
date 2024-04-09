@@ -24,4 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("home.urls")),
     path("", include("mini_factory.urls")),
+    path("", include("stepper_motor.urls")),
+    path("", include("schneider_plc.urls")),
 ]

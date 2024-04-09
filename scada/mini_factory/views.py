@@ -4,7 +4,7 @@ from django.shortcuts import render, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.conf import settings
-from home import utils, models
+from mini_factory import utils, models
 
 
 def control_mode(request):
