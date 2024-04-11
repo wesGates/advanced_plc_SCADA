@@ -1,5 +1,4 @@
-# Advanced PLC SCADA Template Spring 2024
-## Version 1.0
+# Advanced PLC SCADA Template Spring 2024 - Version 1.0
 ## General Description
 This is the basic template for the University of Idaho Advanced PLC classes SCADA system for tying together all other portions of the class. These include but are not limited to:
   - The AutomationDirect BRX PLC Controlling the Fischertechnik Mini Fatcory 4.0
