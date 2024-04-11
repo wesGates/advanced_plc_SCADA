@@ -6,6 +6,10 @@ This is the basic template for the University of Idaho Advanced PLC classes SCAD
   - The Schneider Electric (S.E) Modicon M172 PLC W/ Various Hardware and the S.E. Smart Thermostat
   - The Lenze C300 PLC Controlling the VFD W/ a 240VAC 3 Phase Motor Attached
 
+## Built With
+  - The Django Web Framework
+  - Boostrap 5 (Template Leveraged can be found here [https://startbootstrap.com/template/sb-admin] )
+
 ## Install and Setup
 - Clone repository
 - Rename scada/local_settings.sample.py to scada/local_setting.py
