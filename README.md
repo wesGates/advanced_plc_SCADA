@@ -8,7 +8,12 @@ This is the basic template for the University of Idaho Advanced PLC classes SCAD
 
 ## Built With
   - The Django Web Framework
-  - Boostrap 5 (Template Leveraged can be found here [Template](https://startbootstrap.com/template/sb-admin) )
+    - [Documentation](https://www.djangoproject.com/)  
+  - Boostrap 5
+    - [Template](https://startbootstrap.com/template/sb-admin)
+    - [Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+  - PyModbus
+    - [Documentation](https://pymodbus.readthedocs.io/en/latest/)
 
 ## Install and Setup
 - Clone repository
