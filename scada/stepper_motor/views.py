@@ -18,10 +18,12 @@ def control_mode(request):
 
 
 def data_table(request):
-        
+    stepper_motor_data_dict = utils.read_json_file("")
+
     return render(
                     request,
                     "stepper_motor/data_table.html",
                     {
+                        "stepper_motor_data_dict": stepper_motor_data_dict,
                     }
     )
