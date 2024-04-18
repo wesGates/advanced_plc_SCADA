@@ -1,6 +1,7 @@
 from pymodbus.client import ModbusTcpClient
 import time
 import json
+from datetime import datetime
 
 
 class plc_tag():
@@ -54,7 +55,22 @@ def write_to_json_file(file_name, data_dict):
         json.dump(data_dict, file)
 
 
+def create_data_structure_for_cache(*args):
+    result_dict = {}
+    # Iterate through unknown number of objects
+    for argument in args:
+        result_dict[argument.name] = argument.value
+
+    # # Append a timestamp 
+    now = datetime.now()
+    result_dict["timestamp"] = now.strftime("%m/%d/%Y, %H:%M:%S")
+
+    return result_dict
+
+
 def main():
+    tag_dict = {}
+
     # Create our click PLC connection object
     click_plc_connection = connect_to_click_plc()
 
@@ -62,36 +78,49 @@ def main():
     in_auto = plc_tag("In Auto", 16385, None)
     in_hand = plc_tag("In Hand", 16386, None)
     e_stop = plc_tag("E-Stop", 16387, None)
-    motor_pulse_control = plc_tag("Motor Pulse Control", 16390, None)
+    motor_pulse_feedback = plc_tag("Motor Pulse Feedback", 16388, None)
     motor_direction_feedback = plc_tag("Motor Direction Feedback", 16389, None)
+    motor_pulse_control = plc_tag("Motor Pulse Control", 16390, None)
     motor_direction_control = plc_tag("Motor Direction Control", 16391, None)
 
     # Use this for changing stepper motor direction
     count = 0
 
-    testing_tag_dict = {}
-
     # Run forever
     while True:
         # Read the selector switch and E-Stop coils
-        ss_switch_and_e_stop = read_coils(click_plc_connection, in_auto.modbus_address, 3)
-        in_auto.value = ss_switch_and_e_stop[0]
-        in_hand.value = ss_switch_and_e_stop[1]
-        e_stop.value = ss_switch_and_e_stop[2]
+        data = read_coils(click_plc_connection, in_auto.modbus_address, 7)
+        in_auto.value = data[0]
+        in_hand.value = data[1]
+        e_stop.value = data[2]
+        motor_pulse_feedback.value = data[3]
+        motor_direction_feedback.value = data[4]
+        motor_pulse_control.value = data[5]
+        motor_direction_control.value = data[6]
 
-        # Take the coils we read from above and write those to a file
-        testing_tag_dict[in_auto.name] = in_auto.value
-        testing_tag_dict[in_hand.name] = in_hand.value
-        testing_tag_dict[e_stop.name] = e_stop.value
-        write_to_json_file("test.json" , testing_tag_dict)
-
-        # if we are in auto and e stop not pressed
+        # Pulse the stepper motor
         if in_auto.value is True and e_stop.value is False:
             pulse_stepper(click_plc_connection, motor_pulse_control)
             count += 1
             if count == 200:
                 count = 0
                 change_motor_direction(click_plc_connection, motor_direction_feedback, motor_direction_control)
+
+        if in_hand.value is True and e_stop.value is False:
+            print("In hand")
+
+        # setup tag dictionary with unlimited arguments
+        tag_dict = create_data_structure_for_cache(
+                                            in_auto,
+                                            in_hand,
+                                            e_stop,
+                                            motor_pulse_feedback,
+                                            motor_direction_feedback,
+                                            motor_pulse_control,
+                                            motor_direction_control
+                                        )
+        # Write data to json file
+        write_to_json_file("stepper_motor.json" , tag_dict)
 
     close_connection_to_click(click_plc_connection)
 
