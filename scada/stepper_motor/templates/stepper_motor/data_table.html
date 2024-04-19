@@ -8,36 +8,27 @@
 
 {% block content %}
 
-{{stepper_motor_data_dict}}
-
-
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Tag Name</th>
+      <th scope="col">Tag Value</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    {% for key, value in stepper_motor_data_dict.items %}
+      {% if key == "E-Stop" and value is True%}
+      <tr class="table-danger">
+          <td>{{key}}</td>
+          <td>{{value}}</td>
+      </tr>
+      {% else %}
+      <tr>
+          <td>{{key}}</td>
+          <td>{{value}}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
   </tbody>
 </table>
 {% endblock %}
