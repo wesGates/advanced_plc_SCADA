@@ -1,3 +1,6 @@
 from django.contrib import admin
+from stepper_motor.models import StepperMotorDataPoint
 
-# Register your models here.
+admin.site.register(StepperMotorDataPoint)
+
+
