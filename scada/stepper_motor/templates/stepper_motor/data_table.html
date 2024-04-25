@@ -8,26 +8,30 @@
 
 {% block content %}
 
+
 <table class="table table-hover" id="main-table">
   <thead>
     <tr>
       <th scope="col">Tag Name</th>
       <th scope="col">Tag Value</th>
+      <th scope="col">Timestamp</th>
     </tr>
   </thead>
   <tbody>
-    {% for key, value in stepper_motor_data_dict.items %}
-      {% if key == "E-Stop" and value is True%}
-      <tr class="table-danger">
-          <td>{{key}}</td>
-          <td>{{value}}</td>
-      </tr>
-      {% else %}
-      <tr>
-          <td>{{key}}</td>
-          <td>{{value}}</td>
-      </tr>
-      {% endif %}
+    {% for reading in data %}
+        {% if reading.tag_name == "E-Stop" and reading.tag_value == 1 %}
+        <tr class="table-danger">
+          <td>{{reading.tag_name}}</td>
+          <td>{{reading.tag_value}}</td>
+          <td>{{reading.timestamp| date:'Y-m-d H:i:s A'}}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td>{{reading.tag_name}}</td>
+          <td>{{reading.tag_value}}</td>
+          <td>{{reading.timestamp| date:'Y-m-d H:i:s A'}}</td>
+        </tr>
+        {% endif %}
     {% endfor %}
   </tbody>
 </table>
@@ -43,5 +47,4 @@
             }, 2000);
     });
   </script>
-
 {% endblock %}

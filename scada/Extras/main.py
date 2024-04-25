@@ -1,6 +1,7 @@
 from pymodbus.client import ModbusTcpClient
 import time
 import json
+import requests
 from datetime import datetime
 
 
@@ -56,20 +57,45 @@ def write_to_json_file(file_name, data_dict):
 
 
 def create_data_structure_for_cache(*args):
+    # Creating tag dictionary
+    # IE: {'In hand': True, "In auto": False}
+
     result_dict = {}
     # Iterate through unknown number of objects
     for argument in args:
         result_dict[argument.name] = argument.value
 
-    # # Append a timestamp 
+    # Append a timestamp 
     now = datetime.now()
     result_dict["timestamp"] = now.strftime("%m/%d/%Y, %H:%M:%S")
 
+    # Result dict = {"In Hand": True, ...., "timestamp": "04/24/2024, 3:37:15"}
     return result_dict
+
+
+def send_data_to_webserver(data_dict, session):
+    # Convert from python dict to JSON string
+    # to be able to send to our django web server
+    json_string = json.dumps(data_dict)
+
+    # This is the site you are trying to send to
+    site_url = 'http://localhost:8000/receive-stepper-data/'
+    # These are some headers for your browser, I wouldn't worry about these
+    headers = {'User-Agent': 'Mozilla/5.0'}
+
+    # This is sending the data to the webserver
+    r = session.post(site_url, data=json_string, headers=headers)
+
+    # This is the webservers response, which if it is working
+    # should be a response code of 200
+    print(r.status_code)
 
 
 def main():
     tag_dict = {}
+    
+    # Create a session with our webserver to speed things up
+    session = requests.Session()
 
     # Create our click PLC connection object
     click_plc_connection = connect_to_click_plc()
@@ -119,8 +145,7 @@ def main():
                                             motor_pulse_control,
                                             motor_direction_control
                                         )
-        # Write data to json file
-        write_to_json_file("stepper_motor.json" , tag_dict)
+        send_data_to_webserver(tag_dict, session)
 
     close_connection_to_click(click_plc_connection)
 

@@ -7,8 +7,3 @@ class StepperMotorDataPoint(models.Model):
 	tag_value = models.IntegerField()
 	# Timestamp
 	timestamp = models.DateTimeField()
-
-
-    # question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    # choice_text = models.CharField(max_length=200)
-    # votes = models.IntegerField(default=0)
