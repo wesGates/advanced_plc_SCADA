@@ -12,13 +12,13 @@ This is the basic template for the University of Idaho Advanced PLC classes SCAD
   - Boostrap 5
     - [Template](https://startbootstrap.com/template/sb-admin)
     - [Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+  - Plotly JS
+    - [Documentation](https://plotly.com/javascript/)
   - PyModbus
     - [Documentation](https://pymodbus.readthedocs.io/en/latest/)
 
 ## Install and Setup
 - Clone repository
-- Rename scada/local_settings.sample.py to scada/local_setting.py
-- Fill in necessary info in local_setting.py
 - Pip install -r requirements.txt
 - Run py manage.py migrate
 
