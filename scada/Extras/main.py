@@ -13,7 +13,7 @@ class plc_tag():
 
 
 def connect_to_click_plc():
-    client = ModbusTcpClient('192.168.0.10', port="502")
+    client = ModbusTcpClient('192.168.1.10', port="502")
     client.connect()
     return client
 
