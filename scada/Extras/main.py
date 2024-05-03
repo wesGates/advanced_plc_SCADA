@@ -4,6 +4,12 @@ import json
 import requests
 from datetime import datetime
 
+""" See OneNote Advanced PLC > Lectures > 04/16 for startup information."""
+
+""" Do this: 
+1. In the command line, apply migrations for all tables in the database by navigating to '~\scada\' and running python manage.py migrate
+2. Then run python manage.py runserver to start the web server. Click the IP address to see the webpage.
+"""
 
 class plc_tag():
     def __init__(self, name, modbus_address, value):
@@ -18,6 +24,11 @@ def connect_to_click_plc():
     return client
 
 
+def disconnect_from_click_plc(client):
+    print("Disconnecting from click PLC")
+    client.close()
+
+
 def read_coils(client, coil_number, number_of_coils=1):
     # Address the offset coil
     coil_number = coil_number - 1
@@ -29,26 +40,6 @@ def read_coils(client, coil_number, number_of_coils=1):
 def write_modbus_coil(client, coil_number, value):
     coil_number = coil_number - 1
     result = client.write_coils(coil_number, value)
-
-
-def close_connection_to_click(client):
-    client.close()
-
-
-def pulse_stepper(client, motor_pulse_control):
-
-    write_modbus_coil(client, motor_pulse_control.modbus_address, True)
-    time.sleep(0.01)
-    write_modbus_coil(client, motor_pulse_control.modbus_address, False)
-    time.sleep(0.01)
-
-
-def change_motor_direction(client, motor_direction_feedback, motor_direction_control):
-
-    motor_direction = read_coils(client, motor_direction_feedback.modbus_address, 1)
-    print("Changing motor direction")
-    motor_direction = motor_direction[0]
-    write_modbus_coil(client, motor_direction_control.modbus_address, not motor_direction)
 
 
 def write_to_json_file(file_name, data_dict):
@@ -104,33 +95,21 @@ def main():
     in_auto = plc_tag("In Auto", 16385, None)
     in_hand = plc_tag("In Hand", 16386, None)
     e_stop = plc_tag("E-Stop", 16387, None)
-    motor_pulse_feedback = plc_tag("Motor Pulse Feedback", 16388, None)
-    motor_direction_feedback = plc_tag("Motor Direction Feedback", 16389, None)
-    motor_pulse_control = plc_tag("Motor Pulse Control", 16390, None)
-    motor_direction_control = plc_tag("Motor Direction Control", 16391, None)
-
-    # Use this for changing stepper motor direction
-    count = 0
+    move_conveyor = plc_tag("Move Conveyor", 16388, None)
 
     # Run forever
     while True:
         # Read the selector switch and E-Stop coils
-        data = read_coils(click_plc_connection, in_auto.modbus_address, 7)
+        data = read_coils(click_plc_connection, in_auto.modbus_address, 4)
         in_auto.value = data[0]
         in_hand.value = data[1]
         e_stop.value = data[2]
-        motor_pulse_feedback.value = data[3]
-        motor_direction_feedback.value = data[4]
-        motor_pulse_control.value = data[5]
-        motor_direction_control.value = data[6]
+        move_conveyor.value = data[3]
 
-        # Pulse the stepper motor
+
+        # Move the conveyor when inAuto mode is selected
         if in_auto.value is True and e_stop.value is False:
-            pulse_stepper(click_plc_connection, motor_pulse_control)
-            count += 1
-            if count == 200:
-                count = 0
-                change_motor_direction(click_plc_connection, motor_direction_feedback, motor_direction_control)
+            write_modbus_coil(click_plc_connection, move_conveyor.modbus_address, True)
 
         if in_hand.value is True and e_stop.value is False:
             print("In hand")
@@ -140,14 +119,11 @@ def main():
                                             in_auto,
                                             in_hand,
                                             e_stop,
-                                            motor_pulse_feedback,
-                                            motor_direction_feedback,
-                                            motor_pulse_control,
-                                            motor_direction_control
+                                            move_conveyor
                                         )
         send_data_to_webserver(tag_dict, session)
 
-    close_connection_to_click(click_plc_connection)
+    disconnect_from_click_plc(click_plc_connection)
 
 
 if __name__ == '__main__':
