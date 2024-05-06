@@ -17,11 +17,11 @@ def home(request):
     )
 
 
-def live_graphs(request):
-    return render(
-                    request,
-                    'home/live-graphs.html',
-                    {
+# def live_graphs(request):
+#     return render(
+#                     request,
+#                     'home/live-graphs.html',
+#                     {
 
-                    }
-    )
+#                     }
+#     )

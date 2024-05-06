@@ -32,7 +32,8 @@ def data_table(request):
     latest_timestamp = models.StepperMotorDataPoint.objects.order_by('-timestamp').first()
 
     # recent_data_points = models.StepperMotorDataPoint.objects.filter(timestamp=latest_timestamp.timestamp)
-    recent_data_points = models.StepperMotorDataPoint.objects.filter(timestamp=latest_timestamp)
+    recent_data_points = models.StepperMotorDataPoint.objects.filter(timestamp=latest_timestamp.timestamp)
+    print("Timestamp output: " , latest_timestamp.timestamp)
 
     return render(
                     request,

@@ -2,7 +2,7 @@
 
 {% block page_styles %}{% endblock %}
 
-{% block page_name %}Stepper Motor Data Table{% endblock %}
+{% block page_name %}Conveyor Data Table{% endblock %}
 
 {% block page_buttons %}{% endblock %}
 
@@ -23,13 +23,16 @@
         <tr class="table-danger">
           <td>{{reading.tag_name}}</td>
           <td>{{reading.tag_value}}</td>
-          <td>{{reading.timestamp| date:'Y-m-d H:i:s A'}}</td>
+          {% comment %} <td>{{reading.timestamp| date:'H:i:s A'}}</td> {% endcomment %}
+          <td>{{ reading.timestamp| date:'H:i:s A' }}</td>
+
         </tr>
         {% else %}
         <tr>
           <td>{{reading.tag_name}}</td>
           <td>{{reading.tag_value}}</td>
-          <td>{{reading.timestamp| date:'Y-m-d H:i:s A'}}</td>
+          <td>{{reading.timestamp| date:'H:i:s A'}}</td>
+          {% comment %} <td>{{reading.timestamp| date:'H:i:s A'}}</td> {% endcomment %}
         </tr>
         {% endif %}
     {% endfor %}
